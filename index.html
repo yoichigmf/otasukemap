@@ -88,13 +88,25 @@ var mainMap = L.tileLayer(
   aerialSusa0807 = L.tileLayer('http://cyberjapandata.gsi.go.jp/xyz/20130717dol2/{z}/{x}/{y}.png', {
   attribution:  '（オルソ画像）', minZoom: 10, maxZoom: 18,zIndex:5})
   
-var style = "mierune_mono";
+var style = "mierune";
 
 // URL設定
 var url = "https://tile.mierune.co.jp/" + style + "/{z}/{x}/{y}.png";
 
 // MIERUNE地図 読み込み
 var m_map = new L.tileLayer(url, {
+    attribution: "Maptiles by <a href='http://mierune.co.jp/' target='_blank'>MIERUNE</a>, under CC BY. Data by <a href='http://osm.org/copyright' target='_blank'>OpenStreetMap</a> contributors, under ODbL."
+});
+
+
+  
+style = "mierune_mono";
+
+// URL設定
+var url = "https://tile.mierune.co.jp/" + style + "/{z}/{x}/{y}.png";
+
+// MIERUNE地図 読み込み
+var m_map_mono = new L.tileLayer(url, {
     attribution: "Maptiles by <a href='http://mierune.co.jp/' target='_blank'>MIERUNE</a>, under CC BY. Data by <a href='http://osm.org/copyright' target='_blank'>OpenStreetMap</a> contributors, under ODbL."
 });
 
@@ -135,6 +147,7 @@ var m_map = new L.tileLayer(url, {
 		
 var BaseMaps = {
      "MIERUNE地図":m_map ,
+          "MIERUNE地図モノクロ":m_map_mono ,
      "OpenStreetMap":OSMLayer ,
       "淡色地図": lightColorMap,
      "地理院地図 標準地図": mainMap,
@@ -150,7 +163,7 @@ var overlays = {};
 
 var control = L.control.layers(BaseMaps, overlays ).addTo(map);
 
-m_map.addTo(map);
+OSMLayer.addTo(map);
 //murayama.addTo(map);
 
  map.locate({setView: true, maxZoom: 18});
