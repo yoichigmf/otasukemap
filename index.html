@@ -1,0 +1,298 @@
+<!DOCTYPE html> 
+<html> 
+	<head> 
+	<title>お助けレンジャーマップ</title> 
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /> 
+	<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
+	<script src="js/jquery.js"></script>
+
+	<script src="js/jquery.mobile-1.4.5.min.js"></script>
+
+	<!--LEAFLET-->
+<link rel="stylesheet" href="js/leaflet-0.7.3/leaflet.css" />
+
+<!--[if lte IE 8]>
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.ie.css" />
+<![endif]-->
+        
+  
+
+    
+    <script src="js/leaflet-0.7.3/leaflet-src.js"></script>
+    
+        <script src="js/L.TileLayer.BetterWMS.js"></script>
+  
+    
+    <style type="text/css">
+		body {
+			padding: 0;
+			margin: 0;
+		}
+		html, body, {
+			height: 100%;
+		}
+		#map { min-height:640px; height: 100vh; margin: -15px;}
+//		#map {  height: 100%; margin: -15px;}
+	
+
+/* Change cursor when mousing over clickable layer */
+.leaflet-clickable {
+  cursor: crosshair !important;
+}
+/* Change cursor when over entire map */
+.leaflet-container {
+  cursor: crosshair !important;
+//  cursor: help !important;
+}
+	</style>
+    
+</head> 
+<body> 
+
+<div data-role="page">
+
+	<div data-role="header" data-position="fixed" data-tap-toggle="true" data-fullscreen="false">
+		<h2>お助けレンジャーマップ</h2>
+	</div><!-- /header -->
+	
+	
+      
+
+	<div data-role="content" data-fullscreen="true">	
+    
+    	<div id="map"></div>
+    
+	<script>
+		var map = L.map('map');
+
+  
+  
+var mainMap = L.tileLayer(
+
+'http://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png', {
+  attribution: '国土地理院 地理院地図 標準地図', minZoom: 5, maxZoom: 18, zIndex:5 }),
+  
+  
+  lightColorMap = L.tileLayer('http://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png', {
+  attribution: '国土地理院 地理院地図 淡色地図', minZoom: 5, maxZoom: 18 ,zIndex:5  })
+  ,
+  DEMMap = L.tileLayer('http://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png', {
+  attribution: '国土地理院 地理院地図 色別標高図', minZoom: 5, maxZoom: 15 ,zIndex:5}),
+  aerial = L.tileLayer('http://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg', {
+  attribution:  '電子国土基本図（オルソ画像）', minZoom: 2, maxZoom: 18,zIndex:5}),
+   blank = L.tileLayer('http://cyberjapandata.gsi.go.jp/xyz/blank/{z}/{x}/{y}.png', {
+  attribution:  '白地図', minZoom: 5, maxZoom: 14}),
+  
+  orth_USA10 = L.tileLayer('http://cyberjapandata.gsi.go.jp/xyz/ort_USA10/{z}/{x}/{y}.png', {
+  attribution:  '空中写真（1945～1950年）', minZoom: 15, maxZoom: 17,zIndex:5}),
+  aerialSusa0807 = L.tileLayer('http://cyberjapandata.gsi.go.jp/xyz/20130717dol2/{z}/{x}/{y}.png', {
+  attribution:  '（オルソ画像）', minZoom: 10, maxZoom: 18,zIndex:5})
+  
+var style = "mierune_mono";
+
+// URL設定
+var url = "https://tile.mierune.co.jp/" + style + "/{z}/{x}/{y}.png";
+
+// MIERUNE地図 読み込み
+var m_map = new L.tileLayer(url, {
+    attribution: "Maptiles by <a href='http://mierune.co.jp/' target='_blank'>MIERUNE</a>, under CC BY. Data by <a href='http://osm.org/copyright' target='_blank'>OpenStreetMap</a> contributors, under ODbL."
+});
+
+
+  
+  OSMLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                    attribution : '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors', minZoom: 3, maxZoom: 18, zIndex:5
+                });
+                
+                
+  
+    // Add each wms layer using L.tileLayer.wms
+
+
+
+
+	
+		function onLocationFound(e) {
+/*  var lat = (e.latlng.lat);
+    var lng = (e.latlng.lng);
+    var newLatLng = new L.LatLng(lat, lng);
+    marker.setLatLng(newLatLng);
+*/
+
+//			var radius = e.accuracy / 2;
+			L.marker(e.latlng).addTo(map)
+			//L.marker(e.latlng).addTo(map)
+			//	.bindPopup("You are within " + radius + " meters from this point").openPopup();
+		//	L.circle(e.latlng, radius).addTo(map);
+		}
+		function onLocationError(e) {
+			alert(e.message);
+		}
+		map.on('locationfound', onLocationFound);
+		map.on('locationerror', onLocationError);
+		//map.locate({setView: true, maxZoom: 16});
+		
+		
+var BaseMaps = {
+     "MIERUNE地図":m_map ,
+     "OpenStreetMap":OSMLayer ,
+      "淡色地図": lightColorMap,
+     "地理院地図 標準地図": mainMap,
+"電子国土基本図（オルソ画像)":  aerial
+
+};
+
+var overlays = {};
+
+
+
+
+
+var control = L.control.layers(BaseMaps, overlays ).addTo(map);
+
+m_map.addTo(map);
+//murayama.addTo(map);
+
+ map.locate({setView: true, maxZoom: 18});
+ 
+ 
+ map.on('click', function(e) {
+ 
+    GetClickedItemInfo( e.latlng );
+
+//    var url =  getFeatureInfoUrl(e.latlng, fude ) ;
+    
+//     $.ajax({
+//      url: url,
+//      success: function (data, status, xhr) {
+//        var err = typeof data === 'string' ? null : data;
+//        showGetFeatureInfoD(err, e.latlng, data);
+//      },
+//      error: function (xhr, status, error) {
+//       showGetFeatureInfoD(error);  
+//      }
+//    });
+    
+
+});
+
+
+function GetClickedItemInfo( latlng ) {
+
+    var url =  getFeatureInfoUrl(latlng, fude ) ;
+    
+     $.ajax({
+      url: url,
+      success: function (data, status, xhr) {
+        var err = typeof data === 'string' ? null : data;
+        showGetFeatureInfoD(err, latlng, data);
+      },
+      error: function (xhr, status, error) {
+       showGetFeatureInfoD(error);  
+      }
+    });
+
+  }
+
+ function getFeatureInfoUrl(latlng, wmsl ) {
+    // Construct a GetFeatureInfo request URL given a point
+    var point = map.latLngToContainerPoint(latlng, map.getZoom()),
+        size = map.getSize(),
+        
+        params = {
+          request: 'GetFeatureInfo',
+          service: 'WMS',
+          srs: 'EPSG:4326',
+          styles: wmsl.wmsParams.styles,
+          transparent: wmsl.wmsParams.transparent,
+          version: wmsl.wmsParams.version,      
+          
+          format: wmsl.wmsParams.format,
+          bbox: map.getBounds().toBBoxString(),
+          height: size.y,
+          width: size.x,
+          layers: wmsl.wmsParams.layers,
+          query_layers: wmsl.wmsParams.layers,
+          info_format: 'text/html'
+        };
+    
+    params[params.version === '1.3.0' ? 'i' : 'x'] = point.x;
+    params[params.version === '1.3.0' ? 'j' : 'y'] = point.y;
+    
+    return wmsl._url + L.Util.getParamString(params, wmsl._url, true);
+  }
+
+
+function showGetFeatureInfoD(err, latlng, content) {
+    if (err) { console.log(err); return; } // do nothing if there's an error
+    
+    //alert(content)
+    // Otherwise show the content in a popup, or something.
+    L.popup({ maxWidth: 200})
+      .setLatLng(latlng)
+      .setContent(content)
+      .openOn(map);
+  }
+
+
+function  PopUpLatLon( pLat, pLon ) {
+   var latitude = (Math.round(pLat * 10000)) /10000;  
+    var longitude = (Math.round(pLon * 10000)) /10000; 
+    
+    var popup = L.popup()
+    .setLatLng([ pLat, pLon])
+    .setContent("緯度:" + latitude + " , " + "経度:" + longitude)
+    .openOn(map);
+}
+ 
+function  PanCurrentLocation(){
+		 map.locate({setView: true, maxZoom: 18});
+		
+		}
+
+function successCallback(position) {
+ 
+    var lat = position.coords.latitude;
+    var lng = position.coords.longitude;
+    
+    alert( lat + "  " + lng );
+    
+    map.panTo(new L.LatLng(lat,lng));
+  //   map.setView(new L.LatLng( lat,lng),16);
+  //  map.locate({setView: true, maxZoom: 16});
+    }
+   
+ function errorCallback(error) {
+    alert("位置情報取得に失敗しました。");
+} 
+    
+    
+  function GetItemInfo() {
+  
+     var latlng = map.getCenter();
+     GetClickedItemInfo( latlng );
+     //PopUpLatLon( latlng.lat, latlng.lng );
+     
+  }
+  	
+		
+	</script>
+
+    
+	</div><!-- /content -->
+    
+    <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-fullscreen="false">
+    	<div data-role="navbar" data-position="fixed" data-tap-toggle="false" >
+		<ul>
+			<li><a href="JavaScript:PanCurrentLocation()"  class="ui-btn ui-btn-inline ui-icon-home ui-btn-icon-top">現在地</a></li>
+			<li><a href="#" id="CONTACTS" class="ui-btn ui-btn-inline ui-icon-gear ui-btn-icon-top">情報設定</a></li>
+			<li><a href="JavaScript:GetItemInfo()" id="TRIPS" class="ui-btn ui-btn-inline ui-icon-info ui-btn-icon-top">情報表示</a></li>
+			<li><a href="#" id="ACCOUNT" class="ui-btn ui-btn-inline ui-icon-back ui-btn-icon-top">ログアウト</a></li>
+		</ul>
+		</div>
+	</div>
+
+</div><!-- /page -->
+
+</body>
+</html>
