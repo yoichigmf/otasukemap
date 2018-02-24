@@ -1,37 +1,108 @@
-<!DOCTYPE html> 
-<html> 
-	<head> 
-	<title>お助けレンジャーマップ</title> 
-	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /> 
-	<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
-	<script src="js/jquery.js"></script>
+<!DOCTYPE html>
+<html>
+  	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>お助けレンジャーマップ</title>
 
-	<script src="js/jquery.mobile-1.4.5.min.js"></script>
-
-	<!--LEAFLET-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />   
 <link rel="stylesheet" href="js/leaflet-0.7.3/leaflet.css" />
 
 <!--[if lte IE 8]>
         <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.ie.css" />
 <![endif]-->
-        
+
+
+<script src="js/leaflet-0.7.3/leaflet-src.js"></script>
+
+  	  <!--
+   	<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
+	<script src="js/jquery.js"></script>
+	<script src="js/jquery.mobile-1.4.5.min.js"></script>
+	-->
+	
+ 
   
 
-    
-    <script src="js/leaflet-0.7.3/leaflet-src.js"></script>
-    
-        <script src="js/L.TileLayer.BetterWMS.js"></script>
+<!--
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  -->
   
+<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
+<!--  	
+<link rel="stylesheet" href="css/leaflet-panel-layers.css" />
+-->
+<script  src="js/define.js"></script>
+<script src="js/jquery.js"></script>
+<script src="js/jquery.mobile-1.4.5.min.js"></script>
+<!--
+<script src="js/leaflet-panel-layers.js"></script>
+-->
+
+
+   <script>
+        $(document).on("mobileinit", function () {
+          $.mobile.hashListeningEnabled = false;
+          $.mobile.pushStateEnabled = false;
+          $.mobile.changePage.defaults.changeHash = false;
+        });
+        
+        
+$(document).bind('mobileinit', function() {
+    alert('mobileinit');
+    $(document).bind('pageinit', function(e, data) {
+        // initialize page
+        //alert('init');
+    });
+ $(document).bind('pagebeforeshow', function(e, data) {
+        // before show page
+        var $container = $('#baselayers').find('.ui-controlgroup-controls');
+laert("befor");
+
+        // build radio button list
+        for (var i = 0; i < 3; i++) {
+            var id = 'option_' + i,
+                label = 'Option ' + i;
+
+            $('<input />', {
+                'id': id,
+                'type': 'radio',
+                'name': 'options',
+                'value': i
+            }).append('<label for="' + id + '">' + label + '</label>').appendTo($container);
+        }
+        // refresh control group
+        $container.find('input[type=radio]').checkboxradio();
+    });
+});
+    </script> 
     
+  <!--
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>   -->
+  <!--
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  -->
+<!--
+  <link rel="stylesheet" href="css/style2.css">
+-->
+  
+    <style>
+  ul { list-style-type: none; margin: 0; padding: 0; margin-bottom: 10px; }
+  li { margin: 5px; padding: 5px; width: 150px; }
+  </style>
+  
+  
+<script src="js/L.TileLayer.BetterWMS.js"></script>
+
+
+  
     <style type="text/css">
 		body {
 			padding: 0;
 			margin: 0;
 		}
-		html, body, {
+		html, body{
 			height: 100%;
 		}
-		#map { min-height:640px; height: 100vh; margin: -15px;}
+ 		#map { min-height:717px; height: 100vh;  margin: -15px;}
 //		#map {  height: 100%; margin: -15px;}
 	
 
@@ -45,167 +116,557 @@
 //  cursor: help !important;
 }
 	</style>
+	
+	<style>
+	table.fudeinfo {
+    width: 100%;
+    margin:20px 0 50px;
+    border-top: 1px solid #CCC;
+    border-left: 1px solid #CCC;
+    border-spacing:0;
+}
+table.fudeinfo tr th,table.fudeinfo tr td {
+    font-size: 12px;
+    border-bottom: 1px solid #CCC;
+    border-right: 1px solid #CCC;
+    padding: 7px;
+}
+table.fudeinfo tr th {
+    background: #E6EAFF;
+}
+</style>
+
+	<!--
+   <script src="js/js.cookie.js"></script>
+   <script src="js/mdaut.js"></script>
+   -->
+   
+     <script src="js/layersdef.js"></script>
+     
+     <script>
+     
+      var  CbaseLayer;
+      
+     </script>
+     
+</head>
+
+<body>
+
+ <!--1ダイアログ風のポップアップを準備-->
+  <div id="popup" data-role="popup" data-overlay-theme="b"
+    data-dismissible="false" style="max-width:500px;">
+    <div data-role="header" data-theme="b">
+      <h1>確認</h1>
+    </div> 
+    <div role="main" class="ui-content">
+      <p>ログアウトしますか？</p>
+
+      <!--2ダイアログを閉じるためのボタン -->
+      <a href="JavaScript:midori_logout()" 
+        class="ui-btn ui-btn-inline ui-corner-all ui-btn-b">ログアウト</a>
+      <a href="#" data-rel="back"
+        class="ui-btn ui-btn-inline ui-corner-all">閉じる</a>
+    </div>
+  </div>
+  
+  
+
+      <div id="panel" data-role="panel" data-display="overlay" data-position="left">
+      <!--3パネルを閉じるためのリンクボタン -->
+    <a href="#" data-rel="close"
+      class="ui-btn ui-corner-all ui-icon-delete ui-btn-icon-left">閉じる</a>
+ 
+  
+     
+     
+    <h3>表示位置指定</h3>
     
-</head> 
-<body> 
+    
+    <div class="ui-field-contain">
+	<fieldset data-role="controlgroup">
 
-<div data-role="page">
+	
+		
+		
+	</fieldset>
+	
+<!--	<div id="selected_chiiki" >
 
+	</div>
+	-->
+	
+  </div>
+       
+      
+     <a href="JavaScript:PanMap()"  class="ui-btn ui-corner-all ui-icon-arrow-u ui-btn-icon-left">表示位置移動</a>
+     
+  
+  <script>
+  <!--
+  var  chiiki_name, chiiki_id, chiiki_lat, chiiki_lon;
+  var  sityouson_name, sityouson_id, sityouson_lat, sityouson_lon;
+  var  aza_name, aza_id, aza_lat, aza_lon;  
+  var  koaza_name, koaza_id, koaza_lat, koaza_lon;  
+  var  chiban_name, chiban_id, chiban_lat, chiban_lon;  
+  
+  var  koaza_initialized = false;
+   
+  var  ooaza_initialized = false;
+  
+  var   chiban_initialized = false;
+  
+  var   city_initialized = false;
+  
+  var     chiiki_initialized = true;
+  
+  
+  var  all_initialized = false;
+  
+  -->
+  
+  var   fstatus = {
+                NONE : 0,
+                MOUSE : 1,
+                FUDE : 2, };
+                
+  var   click_status = fstatus.NONE;
+  
+ 
+
+    
+  var  use_geolocation = true;    //  geolocation を利用可能かどうか
+  
+  var redMarker  = L.icon({
+    iconUrl: 'images/marker_red.png',
+    shadowUrl: 'images/marker-shadow.png',
+
+    iconSize:     [16, 34], // size of the icon
+    shadowSize:   [16, 34], // size of the shadow
+    iconAnchor:   [0, 0], // point of the icon which will correspond to marker's location
+    shadowAnchor: [0, 0],  // the same for the shadow
+    popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+});
+
+
+
+  
+  
+   
+
+</script>
+
+
+  </div> <!--  end of address search panael -->
+  
+  
+    <div id="panel_layer" data-role="panel" data-display="overlay" data-position="right">
+      <a href="#" data-rel="close"
+      class="ui-btn ui-corner-all ui-icon-delete ui-btn-icon-left">閉じる</a>
+          <h3>レイヤ表示指定</h3>
+          
+      <div id="tabs" data-role="tabs">
+      <!--2タブリストを準備-->
+      <div data-role="navbar">
+        <ul>
+          <li><a href="#backgr" id="ly_back"   class="ui-btn-active">背景</a></li>
+          <li><a href="#overlay"  id="ly_thema" >主題図</a></li>
+        </ul>
+      </div>
+      
+      
+      <form method="POST" action="">
+      <!--1パネル（コンテンツ領域）を準備-->
+      <div id="backgr" class="ui-body ui-body-a">
+      
+    
+      <!--ラジオボタンで単一選択ボタンを作成-->
+      <div class="ui-field-contain">  
+      
+     <div data-role="fieldcontain">
+          <fieldset id="baselayers" data-role="controlgroup">
+     <!--   <fieldset data-role="controlgroup">  -->
+          
+          <input id="e2" name="base_layer" type="radio" value="オープンストリートマップ" checked />
+          <label for="e2">オープンストリートマップ</label>
+          
+          
+          <input id="e1" name="base_layer" type="radio" value="地理院地図 標準地図" />
+          <label for="e1">地理院地図 標準地図</label>
+  
+         <input id="e5" name="base_layer" type="radio" value="電子国土基本図（オルソ画像)" />
+          <label for="e5">電子国土基本図（オルソ画像)</label>
+                   
+          <input id="e6" name="base_layer" type="radio" value="淡色地図" />
+          <label for="e6">淡色地図</label>
+ 
+  <!--        
+          <input id="e7" name="base_layer" type="radio" value="白地図" />
+          <label for="e7">白地図</label>
+          
+          <input id="e8" name="base_layer" type="radio" value="地理院地図 色別標高図" />
+          <label for="e8">地理院地図 色別標高図</label>
+          
+     -->     
+          
+          </fieldset>      <!--  </fieldset> -->
+          </div>   <!--  fieldcontain -->
+        </div>  <!-- ui-field-contain  -->
+      </div>   <!--  backgr  -->
+      
+      <div id="overlay" class="ui-body ui-body-a">
+          <div class="ui-field-contain">
+        <fieldset data-role="controlgroup">
+       
+        </fieldset>
+      </div>
+        
+      </div>   <!--  overlay  -->
+ 
+      </form>
+      
+      
+    </div>
+  </div>
+  
+  
+      
+    </div>
+    
+  
+  
+  
+  <div id="panel_r" data-role="panel" data-display="overlay" data-position="right">
+      <a href="#" data-rel="close"
+      class="ui-btn ui-corner-all ui-icon-delete ui-btn-icon-left">閉じる</a>
+      
+      
+   <div id="item_info" >
+    <h3>筆情報</h3>
+    <p>指定地点に筆がある場合、筆情報を表示します</p>
+ 
+    <!--3パネルを閉じるためのリンクボタン -->
+    </div>
+  </div>
+  
+  
+ 
 	<div data-role="header" data-position="fixed" data-tap-toggle="true" data-fullscreen="false">
 		<h2>お助けレンジャーマップ</h2>
+		
+		 	<div data-role="navbar" data-position="fixed" data-tap-toggle="false" >
+		<ul>
+		<!--	<li><a href="#panel" id="CONTACTS" class="ui-btn ui-btn-inline ui-icon-search ui-btn-icon-top">位置検索</a></li> -->
+			<li><a href="JavaScript:PanCurrentLocation()"  class="ui-btn ui-btn-inline ui-icon-home ui-btn-icon-top">現在地</a></li>
+			<!-- <li><a href="#panel_r" id="TRIPS" class="ui-btn ui-btn-inline ui-icon-info ui-btn-icon-top">筆情報表示</a></li> -->
+	       <!-- <li><a href="JavaScript:GetItemInfo()" id="TRIPS" class="ui-btn ui-btn-inline ui-icon-info ui-btn-icon-top">筆情報表示</a></li>  --> 
+			<li><a href="JavaScript:OpenLayerProp()" id="layer_property" class="ui-btn ui-btn-inline ui-icon-bars ui-btn-icon-top">表示項目指定</a></li>
+			
+			<!--
+						<li><a href="#panel_layer" id="layer_property" class="ui-btn ui-btn-inline ui-icon-bars ui-btn-icon-top">表示レイヤ指定</a></li>
+						^--->
+		<!--	<li><a href="#popup" id="TRIPS" data-rel="popup"  class="ui-btn ui-btn-inline ui-icon-carat-d ui-btn-icon-top">ログアウト</a></li>  
+	 -->
+		</ul>
+		  </div>  <!--  navbar -->
+			
+
 	</div><!-- /header -->
 	
 	
-      
 
-	<div data-role="content" data-fullscreen="true">	
-    
-    	<div id="map"></div>
-    
-	<script>
-		var map = L.map('map');
-
-  
-  
-var mainMap = L.tileLayer(
-
-'http://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png', {
-  attribution: '国土地理院 地理院地図 標準地図', minZoom: 5, maxZoom: 18, zIndex:5 }),
-  
-  
-  lightColorMap = L.tileLayer('http://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png', {
-  attribution: '国土地理院 地理院地図 淡色地図', minZoom: 5, maxZoom: 18 ,zIndex:5  })
-  ,
-  DEMMap = L.tileLayer('http://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png', {
-  attribution: '国土地理院 地理院地図 色別標高図', minZoom: 5, maxZoom: 15 ,zIndex:5}),
-  aerial = L.tileLayer('http://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg', {
-  attribution:  '電子国土基本図（オルソ画像）', minZoom: 2, maxZoom: 18,zIndex:5}),
-   blank = L.tileLayer('http://cyberjapandata.gsi.go.jp/xyz/blank/{z}/{x}/{y}.png', {
-  attribution:  '白地図', minZoom: 5, maxZoom: 14}),
-  
-  orth_USA10 = L.tileLayer('http://cyberjapandata.gsi.go.jp/xyz/ort_USA10/{z}/{x}/{y}.png', {
-  attribution:  '空中写真（1945～1950年）', minZoom: 15, maxZoom: 17,zIndex:5}),
-  aerialSusa0807 = L.tileLayer('http://cyberjapandata.gsi.go.jp/xyz/20130717dol2/{z}/{x}/{y}.png', {
-  attribution:  '（オルソ画像）', minZoom: 10, maxZoom: 18,zIndex:5})
-  
-var style = "mierune";
-
-// URL設定
-var url = "https://tile.mierune.co.jp/" + style + "/{z}/{x}/{y}.png";
-
-// MIERUNE地図 読み込み
-var m_map = new L.tileLayer(url, {
-    attribution: "Maptiles by <a href='http://mierune.co.jp/' target='_blank'>MIERUNE</a>, under CC BY. Data by <a href='http://osm.org/copyright' target='_blank'>OpenStreetMap</a> contributors, under ODbL."
-});
-
-
-  
-style = "mierune_mono";
-
-// URL設定
-var url = "https://tile.mierune.co.jp/" + style + "/{z}/{x}/{y}.png";
-
-// MIERUNE地図 読み込み
-var m_map_mono = new L.tileLayer(url, {
-    attribution: "Maptiles by <a href='http://mierune.co.jp/' target='_blank'>MIERUNE</a>, under CC BY. Data by <a href='http://osm.org/copyright' target='_blank'>OpenStreetMap</a> contributors, under ODbL."
-});
-
-
-  
-  OSMLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                    attribution : '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors', minZoom: 3, maxZoom: 18, zIndex:5
-                });
-                
-                
-  
-    // Add each wms layer using L.tileLayer.wms
-
-
-
-
+	<div data-role="content"  data-position="fixed"  data-fullscreen="false" >	
 	
-		function onLocationFound(e) {
-/*  var lat = (e.latlng.lat);
-    var lng = (e.latlng.lng);
-    var newLatLng = new L.LatLng(lat, lng);
-    marker.setLatLng(newLatLng);
-*/
+	
+	
+	
 
-//			var radius = e.accuracy / 2;
-			L.marker(e.latlng).addTo(map)
-			//L.marker(e.latlng).addTo(map)
-			//	.bindPopup("You are within " + radius + " meters from this point").openPopup();
-		//	L.circle(e.latlng, radius).addTo(map);
-		}
-		function onLocationError(e) {
-			alert(e.message);
-		}
-		map.on('locationfound', onLocationFound);
-		map.on('locationerror', onLocationError);
-		//map.locate({setView: true, maxZoom: 16});
-		
-		
-var BaseMaps = {
-     "MIERUNE地図":m_map ,
-          "MIERUNE地図モノクロ":m_map_mono ,
-     "OpenStreetMap":OSMLayer ,
-      "淡色地図": lightColorMap,
-     "地理院地図 標準地図": mainMap,
-"電子国土基本図（オルソ画像)":  aerial
+	<div id="map">
+  
+	</div>
+ 
+    </div>  <!-- content -->
 
-};
-
-var overlays = {};
-
-
-
-
-
-var control = L.control.layers(BaseMaps, overlays ).addTo(map);
-
-OSMLayer.addTo(map);
-//murayama.addTo(map);
-
- map.locate({setView: true, maxZoom: 18});
+ 	
  
  
+<script>
+
+//    レイヤ選択 種別
+var CurlayerKind ="background";
+
+
+
+$('#ly_back').on('click', function() {
+   // alert('back');
+   CurlayerKind = "background";
+});
+
+
+$('#ly_thema').on('click', function() {
+  //  alert('thema');
+     CurlayerKind = "thema";
+});
+
+
+
+function  OpenLayerProp() {
+
+
+	    $('#ly_thema').removeClass( 'ui-btn-active' );
+	    $('#ly_back').removeClass('ui-btn-active' );
+	    
+   if ( CurlayerKind == "background" ) {
+       $('#tabs').tabs({
+  			active: 0
+		});
+
+		$('#ly_back').addClass('ui-btn-active' );
+
+   }
+   else {
+	   $('#tabs').tabs({
+		active: 1
+		});
+
+     $('#ly_thema').addClass( 'ui-btn-active' );
+    
+   }
+   
+    $("#panel_layer").panel("open");
+}
+
+
+
+
+
+function  GetItemInfo() {
+
+   if ( click_status == fstatus.FUDE ) {
+      //alert("fude");  chiban_lat, chiban_lon
+      
+      var chibanlatlon  = new L.LatLng(chiban_lat, chiban_lon);
+      
+      GetClickedItemInfo( chibanlatlon  )
+      
+     }
+   else   {
+    $("#panel_r").panel("open");
+   
+     }
+
+}
+
+function changechk( cb ){
+
+  var tgkey = cb.value;
+  var tgstat = cb.checked;
+  
+  var tgLayer =  overlays[tgkey ];
+  
+  if ( tgstat ) {
+      tgLayer.addTo( map );
+  }
+  else {
+     map.removeLayer( tgLayer );
+  
+  }
+//  alert(cb.value);
+//  alert( cb.checked);
+}
+
+
+
+
+
+//     base layer radio button handler
+    $( 'input[name="base_layer"]:radio' ).change( function() {  
+    
+      map.removeLayer( CbaseLayer );
+      
+     // BaseMaps[$( this ).val()].addTo( map );
+     CbaseLayer = BaseMaps[$( this ).val()];
+     
+   CbaseLayer.setZIndex(0);
+    CbaseLayer.addTo( map );
+    // map.addLayer( CBaseLayer, true );
+     
+    // CBaseLayer.setZIndex(0);
+     
+      //map.addLayer( BaseMaps[$( this ).val()], true );
+    //alert( $( this ).val()); // valueを表示  
+    });  
+
+
+//  現在位置マーカー
+var  CPosMarker;
+
+//  現在位置マーカー表示
+function onLocationFound(e) {
+  
+
+if ( CPosMarker  ) {
+        
+       CPosMarker.setLatLng(e.latlng); 
+    }
+    else {
+     CPosMarker = L.marker(e.latlng,{icon:redMarker}).addTo(map);
+    }
+    
+    
+    
+
+}
+
+function onLocationError(e){
+   // var radius = e.accuracy / 2;
+
+   var ermess = "位置取得に失敗しました  " +  ermess 
+    alert( ermess );
+    
+
+}
+
+
+function  PanCurrentLocation(){
+		 map.locate({setView: true, maxZoom: 18});
+		 
+	   //  map.stopLocate();
+		
+		}
+
+
+   var map = L.map('map');
+
+//var control = L.control.layers(BaseMaps, overlays ).addTo(map);
+
+//var panelLayers = new L.Control.PanelLayers(BaseMaps,  overlays, {collapsed: true});
+
+//map.addControl(panelLayers);
+
+
+//map.addEventListener("click" ,onMapclick, true);  
+
+map.on('locationfound', onLocationFound);
+map.on('locationerror', onLocationError);
+
+ 
+var popup = new L.Popup({maxwidth: 800});
+
+   OSMLayer.setZIndex(0);
+   // yamagata_grp.setZIndex(80);
+   // yamagata_grp.addTo(map);
+    OSMLayer.addTo(map);
+       
+ 
+ CbaseLayer = OSMLayer;
+ 
+
+map.setView([35.607705, 139.729142], 16);
+<!-- map.setView([38.404101, 140.138855], 9); -->
+<!-- map.setView([35.3622222, 138.7313889], 9); -->
+<!--  map.setView([35.788211,139.615382], 15); wako -->
+<!-- map.setView([35.9208,140.1792], 14); -->
+
+
+
+  
+  
+  //for ( key in overlays ) {
+  //
+  //}
+
+
+	 var Marker;
+
  map.on('click', function(e) {
  
+// alert( e.latlng) ;
+ 
+ //   click_status = fstatus.MOUSE;
     GetClickedItemInfo( e.latlng );
+    
+    SetMarker( e.latlng );
+      click_status = fstatus.MOUSE;
+  
+    
 
-//    var url =  getFeatureInfoUrl(e.latlng, fude ) ;
-    
-//     $.ajax({
-//      url: url,
-//      success: function (data, status, xhr) {
-//        var err = typeof data === 'string' ? null : data;
-//        showGetFeatureInfoD(err, e.latlng, data);
-//      },
-//      error: function (xhr, status, error) {
-//       showGetFeatureInfoD(error);  
-//      }
-//    });
-    
 
 });
+
+
+  map.on('move',function( e ) {
+         click_status = fstatus.MOUSE;
+  });
+
+function  SetMarker( latlng ){
+
+  if ( Marker  ) {
+        
+       Marker.setLatLng(latlng); 
+    }
+    else {
+     Marker = L.marker( latlng).addTo(map);
+ 
+    }
+
+}
+
+function  SetMarkerLatLn( lat, lng ) {
+
+  
+    var newLatLng = new L.LatLng(lat, lng);
+    
+    SetMarker( newLatLng );
+}
 
 
 function GetClickedItemInfo( latlng ) {
 
-    var url =  getFeatureInfoUrl(latlng, fude ) ;
-    
+//   筆か耕区を切り替え
+
+
+   $("#item_info").html(" ");
+
+    var fudeurl =  getFeatureInfoUrl(latlng, fude ) ;
+    if ( $("[name=ov_layer1]").prop("checked")) {   //  筆がチェックされている場合
+//alert("fude");
+         getFeatureInfoExec( latlng, fudeurl  );
+          }
+          
+   
+       var koukuurl =  getFeatureInfoUrl(latlng, kouku ) ;
+       
+    if ( $("[name=ov_layer4]").prop("checked")){  //  耕区がチェックされている場合
+//alert("kouku");
+       getFeatureInfoExec( latlng, koukuurl );
+         }
+ 
+
+  }
+
+
+ function getFeatureInfoExec( latlng, url )  {
+ 
+       
      $.ajax({
       url: url,
+      type: "POST",
+      dataType: "text",
       success: function (data, status, xhr) {
         var err = typeof data === 'string' ? null : data;
+//alert(status);
+//           alert( url );
+
         showGetFeatureInfoD(err, latlng, data);
       },
       error: function (xhr, status, error) {
        showGetFeatureInfoD(error);  
       }
     });
-
-  }
+    
+ 
+ }
 
  function getFeatureInfoUrl(latlng, wmsl ) {
     // Construct a GetFeatureInfo request URL given a point
@@ -229,83 +690,39 @@ function GetClickedItemInfo( latlng ) {
           info_format: 'text/html'
         };
     
-    params[params.version === '1.3.0' ? 'i' : 'x'] = point.x;
-    params[params.version === '1.3.0' ? 'j' : 'y'] = point.y;
+    params[params.version === '1.3.0' ? 'i' : 'x'] = Math.round(point.x);
+    params[params.version === '1.3.0' ? 'j' : 'y'] = Math.round(point.y);
     
     return wmsl._url + L.Util.getParamString(params, wmsl._url, true);
   }
 
 
 function showGetFeatureInfoD(err, latlng, content) {
-    if (err) { console.log(err); return; } // do nothing if there's an error
+    if (err) { console.log(err);  return; } // do nothing if there's an error
     
     //alert(content)
     // Otherwise show the content in a popup, or something.
-    L.popup({ maxWidth: 200})
-      .setLatLng(latlng)
-      .setContent(content)
-      .openOn(map);
-  }
-
-
-function  PopUpLatLon( pLat, pLon ) {
-   var latitude = (Math.round(pLat * 10000)) /10000;  
-    var longitude = (Math.round(pLon * 10000)) /10000; 
     
-    var popup = L.popup()
-    .setLatLng([ pLat, pLon])
-    .setContent("緯度:" + latitude + " , " + "経度:" + longitude)
-    .openOn(map);
-}
- 
-function  PanCurrentLocation(){
-		 map.locate({setView: true, maxZoom: 18});
-		
-		}
-
-function successCallback(position) {
- 
-    var lat = position.coords.latitude;
-    var lng = position.coords.longitude;
+    var htxt = $("#item_info").html();
     
-    alert( lat + "  " + lng );
+    htxt = htxt + " " + content
+    $("#item_info").html(htxt);
     
-    map.panTo(new L.LatLng(lat,lng));
-  //   map.setView(new L.LatLng( lat,lng),16);
-  //  map.locate({setView: true, maxZoom: 16});
-    }
-   
- function errorCallback(error) {
-    alert("位置情報取得に失敗しました。");
-} 
+    $("#panel_r").panel("open");
     
     
-  function GetItemInfo() {
   
-     var latlng = map.getCenter();
-     GetClickedItemInfo( latlng );
-     //PopUpLatLon( latlng.lat, latlng.lng );
+    		
+  
+  //  var marker = L.marker([]).addTo(map);
+   
      
   }
-  	
-		
-	</script>
 
-    
-	</div><!-- /content -->
-    
-    <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-fullscreen="false">
-    	<div data-role="navbar" data-position="fixed" data-tap-toggle="false" >
-		<ul>
-			<li><a href="JavaScript:PanCurrentLocation()"  class="ui-btn ui-btn-inline ui-icon-home ui-btn-icon-top">現在地</a></li>
-			<li><a href="#" id="CONTACTS" class="ui-btn ui-btn-inline ui-icon-gear ui-btn-icon-top">情報設定</a></li>
-			<li><a href="JavaScript:GetItemInfo()" id="TRIPS" class="ui-btn ui-btn-inline ui-icon-info ui-btn-icon-top">情報表示</a></li>
-			<li><a href="#" id="ACCOUNT" class="ui-btn ui-btn-inline ui-icon-back ui-btn-icon-top">ログアウト</a></li>
-		</ul>
-		</div>
-	</div>
-
-</div><!-- /page -->
-
+ 
+ 
+ 
+ 
+</script>
 </body>
 </html>

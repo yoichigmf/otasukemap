@@ -1,6 +1,3 @@
 
- var  dirbase = "http://www12328uj.sakura.ne.jp/~fujisan/";    //    
+var  zoomeLevel = { "地域": 11, "市町村": 12, "大字": 14, "小字": 15, "筆": 18, "耕区": 18 };
 
- var  orthobase = "http://www12328uj.sakura.ne.jp/~fujisan/";
- 
-  var  live_image = '/~fujisan/present/now.jpg';
