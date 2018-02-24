@@ -33,6 +33,8 @@
 <script  src="js/define.js"></script>
 <script src="js/jquery.js"></script>
 <script src="js/jquery.mobile-1.4.5.min.js"></script>
+
+<script src="js/leaflet.ajax.js"></script>
 <!--
 <script src="js/leaflet-panel-layers.js"></script>
 -->
@@ -136,10 +138,7 @@ table.fudeinfo tr th {
 }
 </style>
 
-	<!--
-   <script src="js/js.cookie.js"></script>
-   <script src="js/mdaut.js"></script>
-   -->
+
    
      <script src="js/layersdef.js"></script>
      
@@ -317,6 +316,27 @@ table.fudeinfo tr th {
       <div id="overlay" class="ui-body ui-body-a">
           <div class="ui-field-contain">
         <fieldset data-role="controlgroup">
+         <input id="ov1"
+            name="ov_layer1" type="checkbox" value="在宅支援センター" onChange='changechk( this )'   />
+          <label for="ov1">在宅支援センター</label>
+          
+                   <input id="ov2"
+            name="ov_layer2" type="checkbox" value="支え愛・ほっとステーション" onChange='changechk( this )'   />
+          <label for="ov2">支え愛・ほっとステーション</label>
+          
+          
+                             <input id="ov3"
+            name="ov_layer3" type="checkbox" value="物忘れ相談医" onChange='changechk( this )'   />
+          <label for="ov3">物忘れ相談医</label>
+          
+          
+                             <input id="ov4"
+            name="ov_layer4" type="checkbox" value="介護予防事業会場" onChange='changechk( this )'   />
+          <label for="ov4">介護予防事業会場</label>
+          
+                             <input id="ov5"
+            name="ov_layer5" type="checkbox" value="保険センター" onChange='changechk( this )'   />
+          <label for="ov5">保険センター</label>
        
         </fieldset>
       </div>
