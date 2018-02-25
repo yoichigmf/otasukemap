@@ -224,6 +224,9 @@ table.fudeinfo tr th {
   
   -->
   
+  
+  
+  
   var   fstatus = {
                 NONE : 0,
                 MOUSE : 1,
@@ -632,20 +635,20 @@ map.setView([35.607705, 139.729142], 16);
 
 	 var Marker;
 
- map.on('click', function(e) {
+ //map.on('click', function(e) {
  
 // alert( e.latlng) ;
  
  //   click_status = fstatus.MOUSE;
-    GetClickedItemInfo( e.latlng );
+ //   GetClickedItemInfo( e.latlng );
     
-    SetMarker( e.latlng );
-      click_status = fstatus.MOUSE;
-  
+ //   SetMarker( e.latlng );
+ //     click_status = fstatus.MOUSE;
+  //
     
 
 
-});
+//});
 
 
   map.on('move',function( e ) {
@@ -678,23 +681,6 @@ function GetClickedItemInfo( latlng ) {
 
 //   筆か耕区を切り替え
 
-
-   $("#item_info").html(" ");
-
-    var fudeurl =  getFeatureInfoUrl(latlng, fude ) ;
-    if ( $("[name=ov_layer1]").prop("checked")) {   //  筆がチェックされている場合
-//alert("fude");
-         getFeatureInfoExec( latlng, fudeurl  );
-          }
-          
-   
-       var koukuurl =  getFeatureInfoUrl(latlng, kouku ) ;
-       
-    if ( $("[name=ov_layer4]").prop("checked")){  //  耕区がチェックされている場合
-//alert("kouku");
-       getFeatureInfoExec( latlng, koukuurl );
-         }
- 
 
   }
 

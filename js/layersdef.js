@@ -27,18 +27,140 @@ var mainMap = L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.
  var ooiLayer = new L.GeoJSON.AJAX("data/ooiyashio.geojson");
  
  
+ var myStyle = {
+        "color": "#ff7800",
+        "weight": 5,
+        "opacity": 0.65
+    };
+    
+    
+     var zaitaku = {
+        "color": "#ffff00",
+        "weight": 5,
+        "opacity": 0.65
+    };
+
+
+var geojsonMarkerOptions1 = {
+    radius: 8,
+    fillColor: "#ff7800",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+};
+
+var geojsonMarkerOptions2 = {
+    radius: 8,
+    fillColor: "#ff7888",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+};
+
+
+
+var geojsonMarkerOptions3 = {
+    radius: 8,
+    fillColor: "#006400",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+};
+
+var geojsonMarkerOptions4 = {
+    radius: 8,
+    fillColor: "#0000ff",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+};
+
+var geojsonMarkerOptions5 = {
+    radius: 8,
+    fillColor: "#ee82ee",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+};
+
+var geojsonMarkerOptions6 = {
+    radius: 8,
+    fillColor: "#008080",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+};
+
+function onEachFeature(feature, layer) {
+    // does this feature have a property named popupContent?
+    if (feature.properties && feature.properties.名称) {
+    
+       var tgtext = "";
+       
+        if ( feature.properties.電話番号 ) {
+               tgtext = feature.properties.名称 + "<br>" + feature.properties.住所 + "<br>電話番号:<a href=\"tel:" + feature.properties.電話番号+"\">" +  feature.properties.電話番号 + "</a>";
+   
+        }
+        else {
+              tgtext = feature.properties.名称 + "<br>" + feature.properties.住所;
  
+        }
+        
+        
+        layer.bindPopup(tgtext);
+    }
+}
+
+
 
  
-var zaitakuLayer = new L.GeoJSON.AJAX("data/zaitakusien.geojson");
+     
+
+var zaitakuLayer = new L.GeoJSON.AJAX("data/zaitakusien.geojson",{pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, geojsonMarkerOptions1);},
+        onEachFeature: onEachFeature
+   		 }
+   		 
+    );
   
-var sasaeaiLayer = new L.GeoJSON.AJAX("data/sasaeai.geojson");
+var sasaeaiLayer = new L.GeoJSON.AJAX("data/sasaeai.geojson"  ,{pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, geojsonMarkerOptions2);},
+        onEachFeature: onEachFeature
+   		 }
+    );
    
-var monowasureLayer = new L.GeoJSON.AJAX("data/monowasure.geojson");
-var kaigoyobouLayer = new L.GeoJSON.AJAX("data/kaigoyobou.geojson");
+var monowasureLayer = new L.GeoJSON.AJAX("data/monowasure.geojson" ,{pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, geojsonMarkerOptions3);},
+        onEachFeature: onEachFeature
+   		 }
+    );
+
+
+
+var kaigoyobouLayer = new L.GeoJSON.AJAX("data/kaigoyobou.geojson" ,{pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, geojsonMarkerOptions4);},
+        onEachFeature: onEachFeature
+   		 }
+    );
     
-var hokenLayer = new L.GeoJSON.AJAX("data/hokencenter.geojson");
-var supportLayer = new L.GeoJSON.AJAX("data/support.geojson");
+var hokenLayer = new L.GeoJSON.AJAX("data/hokencenter.geojson" ,{pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, geojsonMarkerOptions5);},
+        onEachFeature: onEachFeature
+   		 }
+    );
+var supportLayer = new L.GeoJSON.AJAX("data/support.geojson" ,{pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, geojsonMarkerOptions6);},
+        onEachFeature: onEachFeature
+   		 }
+    );
+
+
 
 	     	
 var BaseMaps = {
