@@ -27,16 +27,19 @@ var mainMap = L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.
  var ooiLayer = new L.GeoJSON.AJAX("data/ooiyashio.geojson");
  
  
- var zaitakuLayer = new L.GeoJSON.AJAX("data/zaitakusien.geojson");
  
-  var zaitakuLayer = new L.GeoJSON.AJAX("data/zaitakusien.geojson");
+
+ 
+var zaitakuLayer = new L.GeoJSON.AJAX("data/zaitakusien.geojson");
   
-   var sasaeaiLayer = new L.GeoJSON.AJAX("data/sasaeai.geojson");
+var sasaeaiLayer = new L.GeoJSON.AJAX("data/sasaeai.geojson");
    
-    var monowasureLayer = new L.GeoJSON.AJAX("data/monowasure.geojson");
-      var kaigoyobouLayer = new L.GeoJSON.AJAX("data/kaigoyobou.geojson");
+var monowasureLayer = new L.GeoJSON.AJAX("data/monowasure.geojson");
+var kaigoyobouLayer = new L.GeoJSON.AJAX("data/kaigoyobou.geojson");
     
-	     var hokenLayer = new L.GeoJSON.AJAX("data/hokencenter.geojson");
+var hokenLayer = new L.GeoJSON.AJAX("data/hokencenter.geojson");
+var supportLayer = new L.GeoJSON.AJAX("data/support.geojson");
+
 	     	
 var BaseMaps = {
 
@@ -54,10 +57,21 @@ var BaseMaps = {
 var overlays = {
 "在宅支援センター":zaitakuLayer,
 "支え愛・ほっとステーション":sasaeaiLayer ,
+"認知症サポート医":supportLayer ,
 "物忘れ相談医":monowasureLayer ,
 "介護予防事業会場":kaigoyobouLayer ,
-"保険センター":hokenLayer 
+"保健センター":hokenLayer 
 
 };
 
+
+var default_display = {
+  1:zaitakuLayer,
+2:sasaeaiLayer ,
+3:supportLayer ,
+4:monowasureLayer ,
+5:kaigoyobouLayer ,
+6:hokenLayer 
+
+};
  

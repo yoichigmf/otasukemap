@@ -262,7 +262,7 @@ table.fudeinfo tr th {
     <div id="panel_layer" data-role="panel" data-display="overlay" data-position="right">
       <a href="#" data-rel="close"
       class="ui-btn ui-corner-all ui-icon-delete ui-btn-icon-left">閉じる</a>
-          <h3>レイヤ表示指定</h3>
+          <h3>表示項目指定</h3>
           
       <div id="tabs" data-role="tabs">
       <!--2タブリストを準備-->
@@ -324,7 +324,9 @@ table.fudeinfo tr th {
             name="ov_layer2" type="checkbox" value="支え愛・ほっとステーション" onChange='changechk( this )'   />
           <label for="ov2">支え愛・ほっとステーション</label>
           
-          
+                                       <input id="ov6"
+            name="ov_layer6" type="checkbox" value="認知症サポート医" onChange='changechk( this )'   />
+          <label for="ov6">認知症サポート医</label>
                              <input id="ov3"
             name="ov_layer3" type="checkbox" value="物忘れ相談医" onChange='changechk( this )'   />
           <label for="ov3">物忘れ相談医</label>
@@ -335,8 +337,8 @@ table.fudeinfo tr th {
           <label for="ov4">介護予防事業会場</label>
           
                              <input id="ov5"
-            name="ov_layer5" type="checkbox" value="保険センター" onChange='changechk( this )'   />
-          <label for="ov5">保険センター</label>
+            name="ov_layer5" type="checkbox" value="保健センター" onChange='changechk( this )'   />
+          <label for="ov5">保健センター</label>
        
         </fieldset>
       </div>
@@ -362,8 +364,7 @@ table.fudeinfo tr th {
       
       
    <div id="item_info" >
-    <h3>筆情報</h3>
-    <p>指定地点に筆がある場合、筆情報を表示します</p>
+  
  
     <!--3パネルを閉じるためのリンクボタン -->
     </div>
@@ -378,15 +379,12 @@ table.fudeinfo tr th {
 		<ul>
 		<!--	<li><a href="#panel" id="CONTACTS" class="ui-btn ui-btn-inline ui-icon-search ui-btn-icon-top">位置検索</a></li> -->
 			<li><a href="JavaScript:PanCurrentLocation()"  class="ui-btn ui-btn-inline ui-icon-home ui-btn-icon-top">現在地</a></li>
-			<!-- <li><a href="#panel_r" id="TRIPS" class="ui-btn ui-btn-inline ui-icon-info ui-btn-icon-top">筆情報表示</a></li> -->
-	       <!-- <li><a href="JavaScript:GetItemInfo()" id="TRIPS" class="ui-btn ui-btn-inline ui-icon-info ui-btn-icon-top">筆情報表示</a></li>  --> 
+			
+	       <!-- <li><a href="JavaScript:GetItemInfo()" id="TRIPS" class="ui-btn ui-btn-inline ui-icon-info ui-btn-icon-top">情報表示</a></li>  --> 
 			<li><a href="JavaScript:OpenLayerProp()" id="layer_property" class="ui-btn ui-btn-inline ui-icon-bars ui-btn-icon-top">表示項目指定</a></li>
 			
-			<!--
-						<li><a href="#panel_layer" id="layer_property" class="ui-btn ui-btn-inline ui-icon-bars ui-btn-icon-top">表示レイヤ指定</a></li>
-						^--->
-		<!--	<li><a href="#popup" id="TRIPS" data-rel="popup"  class="ui-btn ui-btn-inline ui-icon-carat-d ui-btn-icon-top">ログアウト</a></li>  
-	 -->
+		
+	
 		</ul>
 		  </div>  <!--  navbar -->
 			
@@ -427,6 +425,30 @@ $('#ly_thema').on('click', function() {
   //  alert('thema');
      CurlayerKind = "thema";
 });
+
+
+   //変数argはオブジェクトですよ
+var arg = new Object;
+
+// 変数pairにURLの?の後ろを&で区切ったものを配列にして代入
+var pair=location.search.substring(1).split('&');
+    // location.search.substring(1)は、URLから最初の1文字 (?記号) を除いた文字列を取得する
+    // .split('&')は&で区切り配列に分割する
+
+
+// for文でrairがある限りループさせる
+for(var i=0;pair[i];i++) {
+
+// 変数kvにpairを=で区切り配列に分割する
+    var kv = pair[i].split('=');// kvはkey-value
+
+ // 最初に定義したオブジェクトargに連想配列として格納
+    arg[kv[0]]=kv[1];  // kv[0]がkey,kv[1]がvalue
+
+}
+
+//alert( arg.ilayer );
+
 
 
 
@@ -579,7 +601,18 @@ var popup = new L.Popup({maxwidth: 800});
     OSMLayer.addTo(map);
        
  
+ if ( arg.ilayer ) {  //  初期表示   ?ilayer=1 - 6
+ 
+   if (( arg.ilayer > 0 ) && ( arg.ilayer <7 ) ){
+ var tg = default_display[arg.ilayer ];
+ 
+ tg.addTo(map);
+ 
+ 
  CbaseLayer = OSMLayer;
+ }
+ 
+ }
  
 
 map.setView([35.607705, 139.729142], 16);
